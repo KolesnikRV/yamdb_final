@@ -1,4 +1,4 @@
-name: YamDB workflow
+name: YamDB_workflow
 
 on: [push]
 
@@ -23,8 +23,13 @@ jobs:
       run: |
         python -m flake8
         pytest
-      with:
-        DB_ENGINE=${{ secrets.DB_ENGINE }}
+      env:
+        DB_ENGINE: ${{ secrets.DB_ENGINE }}
+        DB_NAME: ${{ secrets.DB_NAME }}
+        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        DB_HOST: ${{ secrets.DB_HOST }}
+        DB_PORT: ${{ secrets.DB_PORT }}
 
   build_and_push_to_docker_hub:
     name: Push Docker image to Docker Hub
