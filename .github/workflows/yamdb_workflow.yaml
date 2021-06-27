@@ -33,7 +33,7 @@ jobs:
 
   build_and_push_to_docker_hub:
     name: Push Docker image to Docker Hub
-    if: github.ref == 'refs/heads/main'
+    if: github.head_ref == 'main'
     runs-on: ubuntu-20.04
     needs: tests
     steps:
@@ -80,16 +80,16 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - name: send message if push to main branch
-      if: github.ref == 'refs/heads/main' && needs.deploy.result == 'success'
+      if: github.head_ref == 'main' && needs.deploy.result == 'success'
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
         message: ${{ github.workflow }} успешно выполнен!
     - name: send message if push not to main branch
-      if: github.ref != 'refs/heads/main' && needs.deploy.result != 'success'
+      if: github.head_ref != 'main' && needs.deploy.result != 'success'
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: ${{ github.workflow }} новые изменения в ветке ${{ github.ref }}!
+        message: ${{ github.workflow }} новые изменения в ветке ${{ github.head_ref }}!
