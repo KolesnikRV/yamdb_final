@@ -1,6 +1,6 @@
 name: YamDB_workflow
 
-on: [push, pull_request]
+on: [push] # тесты не пропускают такой вариант [push, pull_request]
 
 jobs:
   tests:
