@@ -1,6 +1,6 @@
 name: YamDB_workflow
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   tests:
@@ -33,7 +33,7 @@ jobs:
 
   build_and_push_to_docker_hub:
     name: Push Docker image to Docker Hub
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-20.04
     needs: tests
     steps:
@@ -65,7 +65,7 @@ jobs:
         stack_file_name: docker-compose.yaml
         script: |
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/yamdb_final:latest
-          sudo docker-compose stop
+          sudo docker-compose stop web
           sudo docker-compose rm web
           touch .env
           echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
