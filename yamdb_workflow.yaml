@@ -78,6 +78,8 @@ jobs:
 
   send_message:
     runs-on: ubuntu-20.04
+    if: always()
+    needs: deploy
     steps:
     - name: send message if push to main branch
       if: github.ref == 'refs/heads/main' && needs.deploy.result == 'success'
